@@ -51,7 +51,7 @@ public class Grid extends GCompound {
 //      This loop will loop through the grid row by row, so x will be changed, y will be same
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-
+                // TODO: It will be more efficient to create a wall class, extending GLine, and store information of vertical or horizontal, i and j....
                 if (j < size - 1) {
                     arrLines_ver[i][j] = new GLine(x + cellSize + cellSize * j, y + cellSize * i, x + cellSize + cellSize * j, y + cellSize * i + cellSize);
                     add(arrLines_ver[i][j]);
