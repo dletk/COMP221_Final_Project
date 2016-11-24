@@ -1,7 +1,6 @@
 package MazeGenerator;
 
 import acm.graphics.GCompound;
-import acm.graphics.GLine;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -14,11 +13,11 @@ import java.util.Iterator;
  */
 public class Grid extends GCompound {
     //    The arrays to contains the walls in vertical and horizontal directions
-    private GLine[][] arrLines_ver, arrLines_hor;
+    private Wall[][] arrLines_ver, arrLines_hor;
     //    The arrays to hold all the cells of the grid
     private Cell[][] arrCells;
     //    The ArrayList of all walls
-    private ArrayList<GLine> wallList;
+    private ArrayList<Wall> wallList;
     //    Size of each cell (length of wall), size of the grid (number of cells per edge), coordinate of the grid
     private int cellSize;
     private int size;
@@ -39,9 +38,9 @@ public class Grid extends GCompound {
         this.x = x;
         this.y = y;
 //      We need to have "size" row of vertical wall, each row has "size-1" walls
-        arrLines_ver = new GLine[size][size - 1];
+        arrLines_ver = new Wall[size][size - 1];
 //      We need to have size-1 row of horizontal wall, each row has size walls
-        arrLines_hor = new GLine[size - 1][size];
+        arrLines_hor = new Wall[size - 1][size];
         arrCells = new Cell[size][size];
         wallList = new ArrayList<>();
         generateWalls();
@@ -53,18 +52,17 @@ public class Grid extends GCompound {
             for (int j = 0; j < size; j++) {
                 // TODO: It will be more efficient to create a wall class, extending GLine, and store information of vertical or horizontal, i and j....
                 if (j < size - 1) {
-                    arrLines_ver[i][j] = new GLine(x + cellSize + cellSize * j, y + cellSize * i, x + cellSize + cellSize * j, y + cellSize * i + cellSize);
+                    arrLines_ver[i][j] = new Wall(x + cellSize + cellSize * j, y + cellSize * i, x + cellSize + cellSize * j, y + cellSize * i + cellSize, i, j, false);
                     add(arrLines_ver[i][j]);
                     wallList.add(arrLines_ver[i][j]);
                 }
                 if (i < size - 1) {
-                    arrLines_hor[i][j] = new GLine(x + cellSize * j, y + cellSize + cellSize * i, x + cellSize * j + cellSize, y + cellSize + cellSize * i);
+                    arrLines_hor[i][j] = new Wall(x + cellSize * j, y + cellSize + cellSize * i, x + cellSize * j + cellSize, y + cellSize + cellSize * i, i, j, true);
                     add(arrLines_hor[i][j]);
                     wallList.add(arrLines_hor[i][j]);
                 }
 
                 arrCells[i][j] = new Cell(x + j * cellSize, y + i * cellSize, cellSize, cellSize, new HashSet<>());
-//                arrCells[i][j].setFilled(true, Color.GREEN);
                 add(arrCells[i][j]);
 
             }
@@ -74,48 +72,25 @@ public class Grid extends GCompound {
     public void generateMaze() {
         Collections.shuffle(wallList);
         Iterator iter = wallList.iterator();
-        GLine current_wall;
+        Wall current_wall;
         Cell cell1, cell2;
         while (iter.hasNext()) {
-            current_wall = (GLine) iter.next();
-            if (checkWall(current_wall) == 1) {
-                int j = (int) (current_wall.getStartPoint().getX() - x - cellSize) / cellSize;
-                int i = (int) (current_wall.getStartPoint().getY() - y) / cellSize;
-                cell1 = arrCells[i][j];
-                cell2 = arrCells[i][j + 1];
+            current_wall = (Wall) iter.next();
+            if (!current_wall.isHorizontal()) {
+                cell1 = arrCells[current_wall.getRow()][current_wall.getCol()];
+                cell2 = arrCells[current_wall.getRow()][current_wall.getCol() + 1];
             } else {
-                int j = (int) (current_wall.getStartPoint().getX() - x) / cellSize;
-                int i = (int) (current_wall.getStartPoint().getY() - y - cellSize) / cellSize;
-                cell1 = arrCells[i][j];
-                cell2 = arrCells[i + 1][j];
+                cell1 = arrCells[current_wall.getRow()][current_wall.getCol()];
+                cell2 = arrCells[current_wall.getRow() + 1][current_wall.getCol()];
             }
             if (!cell1.getSetContain().contains(cell2) && !cell2.getSetContain().contains(cell1)) {
                 pause(50);
                 current_wall.sendToFront();
                 current_wall.setColor(Color.WHITE);
-//                HashSet<Cell> current_set = cell1.getSetContain();
-//                current_set.addAll(cell2.getSetContain());
-//                cell2.setSetContain(current_set);
-//                cell1.setSetContain(current_set);
+                current_wall.setDeleted(true);
                 joinSet(cell1, cell2);
             }
         }
-
-//        for (int i = 0; i < arrCells.length; i++) {
-//            for (int j = 0; j < arrCells.length; j++) {
-//                System.out.println(arrCells[i][j].getSetContain());
-//            }
-//        }
-
-//        System.out.println("Done");
-//        HashSet<Cell> current = arrCells[1][2].getSetContain();
-//        current.add(arrCells[2][3]);
-//        current.add(arrCells[4][5]);
-//        arrCells[2][3].setSetContain(current);
-//        HashSet<Cell> cu2 = arrCells[2][3].getSetContain();
-//        cu2.add(arrCells[3][3]);
-//        System.out.println(arrCells[1][2].getSetContain());
-//        System.out.println(arrCells[2][3].getSetContain());
     }
 
     /**
@@ -133,16 +108,15 @@ public class Grid extends GCompound {
     }
 
     /**
-     * Method to check whether a wall is vertical or horizontal
+     * Getter of the arrCell for the use of path finding
      *
-     * @param aWall the input wall
-     * @return 1 if the wall is vertical, 0 if the wall is horizontal
+     * @return arrCells
      */
-    private int checkWall(GLine aWall) {
-        if (aWall.getStartPoint().getX() == aWall.getEndPoint().getX()) {
-            return 1;
-        } else {
-            return 0;
-        }
+    public Cell[][] getArrCells() {
+        return arrCells;
+    }
+
+    public ArrayList<Wall> getWallList() {
+        return wallList;
     }
 }

@@ -29,7 +29,8 @@ public class Cell extends GRect {
 
     /**
      * The method to fill the cell with the given color
-     * @param fill set to "true" for filling the cell
+     *
+     * @param fill  set to "true" for filling the cell
      * @param color the filled color
      */
     public void setFilled(boolean fill, Color color) {
