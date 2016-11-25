@@ -13,7 +13,7 @@ import java.util.Iterator;
  */
 public class Grid extends GCompound {
     //    The arrays to contains the walls in vertical and horizontal directions
-    private Wall[][] arrLines_ver, arrLines_hor;
+    private Wall[][] arrWalls_ver, arrWalls_hor;
     //    The arrays to hold all the cells of the grid
     private Cell[][] arrCells;
     //    The ArrayList of all walls
@@ -38,9 +38,9 @@ public class Grid extends GCompound {
         this.x = x;
         this.y = y;
 //      We need to have "size" row of vertical wall, each row has "size-1" walls
-        arrLines_ver = new Wall[size][size - 1];
+        arrWalls_ver = new Wall[size][size - 1];
 //      We need to have size-1 row of horizontal wall, each row has size walls
-        arrLines_hor = new Wall[size - 1][size];
+        arrWalls_hor = new Wall[size - 1][size];
         arrCells = new Cell[size][size];
         wallList = new ArrayList<>();
         generateWalls();
@@ -52,17 +52,17 @@ public class Grid extends GCompound {
             for (int j = 0; j < size; j++) {
                 // TODO: It will be more efficient to create a wall class, extending GLine, and store information of vertical or horizontal, i and j....
                 if (j < size - 1) {
-                    arrLines_ver[i][j] = new Wall(x + cellSize + cellSize * j, y + cellSize * i, x + cellSize + cellSize * j, y + cellSize * i + cellSize, i, j, false);
-                    add(arrLines_ver[i][j]);
-                    wallList.add(arrLines_ver[i][j]);
+                    arrWalls_ver[i][j] = new Wall(x + cellSize + cellSize * j, y + cellSize * i, x + cellSize + cellSize * j, y + cellSize * i + cellSize, i, j, false);
+                    add(arrWalls_ver[i][j]);
+                    wallList.add(arrWalls_ver[i][j]);
                 }
                 if (i < size - 1) {
-                    arrLines_hor[i][j] = new Wall(x + cellSize * j, y + cellSize + cellSize * i, x + cellSize * j + cellSize, y + cellSize + cellSize * i, i, j, true);
-                    add(arrLines_hor[i][j]);
-                    wallList.add(arrLines_hor[i][j]);
+                    arrWalls_hor[i][j] = new Wall(x + cellSize * j, y + cellSize + cellSize * i, x + cellSize * j + cellSize, y + cellSize + cellSize * i, i, j, true);
+                    add(arrWalls_hor[i][j]);
+                    wallList.add(arrWalls_hor[i][j]);
                 }
 
-                arrCells[i][j] = new Cell(x + j * cellSize, y + i * cellSize, cellSize, cellSize, new HashSet<>());
+                arrCells[i][j] = new Cell(x + j * cellSize, y + i * cellSize, cellSize, cellSize, i, j, new HashSet<>());
                 add(arrCells[i][j]);
 
             }
@@ -84,7 +84,7 @@ public class Grid extends GCompound {
                 cell2 = arrCells[current_wall.getRow() + 1][current_wall.getCol()];
             }
             if (!cell1.getSetContain().contains(cell2) && !cell2.getSetContain().contains(cell1)) {
-                pause(50);
+//                pause(50);
                 current_wall.sendToFront();
                 current_wall.setColor(Color.WHITE);
                 current_wall.setDeleted(true);
@@ -120,5 +120,13 @@ public class Grid extends GCompound {
 
     public ArrayList<Wall> getWallList() {
         return wallList;
+    }
+
+    public Wall[][] getArrWalls_ver() {
+        return arrWalls_ver;
+    }
+
+    public Wall[][] getArrWalls_hor() {
+        return arrWalls_hor;
     }
 }

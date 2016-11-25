@@ -14,6 +14,7 @@ public class MazeGenerator extends GraphicsProgram {
     private static final double UPPER_LEFT_Y = 100;
 
     private Grid aMaze;
+    private MazeSolving_BFS solver;
 
     public void init() {
         aMaze = new Grid(SIZE_CELLS, SIZE_MAZE, UPPER_LEFT_X, UPPER_LEFT_Y);
@@ -25,5 +26,8 @@ public class MazeGenerator extends GraphicsProgram {
     public void run() {
         waitForClick();
         aMaze.generateMaze();
+        solver = new MazeSolving_BFS(aMaze.getArrCells(), aMaze.getArrWalls_ver(), aMaze.getArrWalls_hor(), SIZE_MAZE);
+        System.out.println(solver.solve_BFS());
+        System.out.println("Done");
     }
 }
