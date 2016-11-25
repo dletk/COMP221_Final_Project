@@ -91,6 +91,8 @@ public class Grid extends GCompound {
                 joinSet(cell1, cell2);
             }
         }
+        arrCells[size-1][size-1].setFilled(true, Color.CYAN);
+        arrCells[0][0].setFilled(true, Color.YELLOW);
     }
 
     /**
