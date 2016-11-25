@@ -20,6 +20,7 @@ public class Cell extends GRect {
         this.col = col;
         this.setContain = setContain;
         this.setContain.add(this);
+        this.visited = false;
     }
 
     public void setSetContain(HashSet<Cell> setContain) {
@@ -60,7 +61,8 @@ public class Cell extends GRect {
     @Override
     public String toString() {
         return "Cell{" +
-                "row=" + row +
+                "visited=" + visited +
+                ", row=" + row +
                 ", col=" + col +
                 '}';
     }

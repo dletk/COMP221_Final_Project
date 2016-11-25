@@ -71,11 +71,11 @@ public class Grid extends GCompound {
 
     public void generateMaze() {
         Collections.shuffle(wallList);
-        Iterator iter = wallList.iterator();
+        Iterator<Wall> iter = wallList.iterator();
         Wall current_wall;
         Cell cell1, cell2;
         while (iter.hasNext()) {
-            current_wall = (Wall) iter.next();
+            current_wall = iter.next();
             if (!current_wall.isHorizontal()) {
                 cell1 = arrCells[current_wall.getRow()][current_wall.getCol()];
                 cell2 = arrCells[current_wall.getRow()][current_wall.getCol() + 1];

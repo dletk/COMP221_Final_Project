@@ -27,13 +27,17 @@ public class MazeSolving_BFS {
         seen.add(arrCells[sizeMaze - 1][sizeMaze - 1]);
         arrCells[sizeMaze - 1][sizeMaze - 1].setVisited(true);
         while (!seen.isEmpty()) {
+//            System.out.println("Signal");
             Cell curr_Cell = seen.poll();
             if (curr_Cell.equals(arrCells[0][0])) {
 //                Return the path by calling traversing parents
                 return backtrace(curr_Cell);
             } else {
 //                find neighbor that can be reached (no wall between)
+//                System.out.println(curr_Cell);
                 ArrayList<Cell> neighbors = findNeighbors(curr_Cell);
+//                System.out.println(neighbors);
+//                System.out.println(arrWalls_ver[19][18]);
                 Iterator<Cell> iter = neighbors.iterator();
                 while (iter.hasNext()) {
                     Cell curr_Neighbor = iter.next();
@@ -62,7 +66,7 @@ public class MazeSolving_BFS {
 
     protected ArrayList<Cell> findNeighbors(Cell curr_Cell) {
         ArrayList<Cell> neighbors = new ArrayList<Cell>();
-        if (curr_Cell.getRow() - 1 <= 0) {
+        if (curr_Cell.getRow() - 1 >= 0) {
             if (arrWalls_hor[curr_Cell.getRow() - 1][curr_Cell.getCol()].isDeleted()) {
                 neighbors.add(arrCells[curr_Cell.getRow() - 1][curr_Cell.getCol()]);
             }
@@ -77,7 +81,7 @@ public class MazeSolving_BFS {
                 neighbors.add(arrCells[curr_Cell.getRow()][curr_Cell.getCol() + 1]);
             }
         }
-        if (curr_Cell.getCol() - 1 <= 0) {
+        if (curr_Cell.getCol() - 1 >= 0) {
             if (arrWalls_ver[curr_Cell.getRow()][curr_Cell.getCol() - 1].isDeleted()) {
                 neighbors.add(arrCells[curr_Cell.getRow()][curr_Cell.getCol() - 1]);
             }

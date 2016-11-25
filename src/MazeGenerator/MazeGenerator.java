@@ -3,6 +3,10 @@ package MazeGenerator;
 import acm.graphics.GRect;
 import acm.program.GraphicsProgram;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 /**
  * Created by DucLe on 11/21/16.
  */
@@ -27,7 +31,14 @@ public class MazeGenerator extends GraphicsProgram {
         waitForClick();
         aMaze.generateMaze();
         solver = new MazeSolving_BFS(aMaze.getArrCells(), aMaze.getArrWalls_ver(), aMaze.getArrWalls_hor(), SIZE_MAZE);
-        System.out.println(solver.solve_BFS());
+        ArrayList<Cell> path = solver.solve_BFS();
+//        System.out.println(solver.solve_BFS());
+        Iterator<Cell> iter = path.iterator();
+        while (iter.hasNext()) {
+            Cell aCell = iter.next();
+            aCell.setFilled(true, Color.YELLOW);
+            pause(50);
+        }
         System.out.println("Done");
     }
 }
