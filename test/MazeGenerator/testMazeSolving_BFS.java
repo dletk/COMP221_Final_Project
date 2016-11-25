@@ -1,22 +1,18 @@
 package MazeGenerator;
 
-import MazeGenerator.Cell;
-import MazeGenerator.Grid;
-import MazeGenerator.MazeSolving_BFS;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * Created by DucLe on 11/25/16.
  */
 public class testMazeSolving_BFS {
-    private Grid aMaze = new Grid(20,20,50,50);
+    private Grid aMaze = new Grid(20, 20, 50, 50);
     private MazeSolving_BFS solver;
 
     @Test
@@ -37,6 +33,7 @@ public class testMazeSolving_BFS {
     public void testDictParent() {
         aMaze.generateMaze();
         solver = new MazeSolving_BFS(aMaze.getArrCells(), aMaze.getArrWalls_ver(), aMaze.getArrWalls_hor(), 20);
+        solver.solve_BFS();
         assertNotEquals("dictParents empty", new HashMap<Cell, Cell>(), solver.getDictParents());
         System.out.println(solver.getDictParents());
     }

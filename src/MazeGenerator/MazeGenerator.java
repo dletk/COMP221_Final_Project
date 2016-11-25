@@ -24,7 +24,7 @@ public class MazeGenerator extends GraphicsProgram {
         aMaze = new Grid(SIZE_CELLS, SIZE_MAZE, UPPER_LEFT_X, UPPER_LEFT_Y);
         add(aMaze);
 //        Make the outer edge for the maze
-        add(new GRect(UPPER_LEFT_X, UPPER_LEFT_Y, SIZE_CELLS*SIZE_MAZE, SIZE_CELLS*SIZE_MAZE));
+        add(new GRect(UPPER_LEFT_X, UPPER_LEFT_Y, SIZE_CELLS * SIZE_MAZE, SIZE_CELLS * SIZE_MAZE));
     }
 
     public void run() {
