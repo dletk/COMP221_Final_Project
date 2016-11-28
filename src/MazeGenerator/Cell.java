@@ -10,7 +10,6 @@ import java.util.HashSet;
  */
 public class Cell extends GRect {
     private boolean visited;
-    private Color color;
     private int row, col;
     private HashSet<Cell> setContain;
 
