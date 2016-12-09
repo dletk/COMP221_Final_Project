@@ -14,8 +14,9 @@ public class Knapsack_generator {
     private int capacity;
     private HashMap<Integer, ArrayList<Integer>> items_dict;
 
-    public Knapsack_generator(int level) {
+    public Knapsack_generator(int level, int capacity) {
         this.level = level;
+        this.capacity = capacity;
         this.num_items = generate_num_items(level);
         generate_items(num_items);
     }
@@ -31,8 +32,8 @@ public class Knapsack_generator {
         items_dict = new HashMap<>();
         for (int i = 0; i < num_items; i++) {
             ArrayList<Integer> newItem = new ArrayList<Integer>();
-            newItem.add(random_generator.nextInt(capacity / 5, capacity / 2));
-            newItem.add(random_generator.nextInt(20, 80));
+            newItem.add(random_generator.nextInt(capacity / 5, capacity / 2));//Weight
+            newItem.add(random_generator.nextInt(20, 80));//Value
             items_dict.put(i + 1, newItem);
         }
         return items_dict;

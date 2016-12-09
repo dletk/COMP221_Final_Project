@@ -63,6 +63,7 @@ public class Grid extends GCompound {
                 }
 
                 arrCells[i][j] = new Cell(x + j * cellSize, y + i * cellSize, cellSize, cellSize, i, j, new HashSet<>());
+//                arrCells[i][j].setFilled(true, Color.CYAN);
                 add(arrCells[i][j]);
 
             }

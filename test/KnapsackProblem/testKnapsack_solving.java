@@ -18,7 +18,7 @@ public class testKnapsack_solving {
 
     @Test
     public void testSolving() {
-        Knapsack_generator problem = new Knapsack_generator(5);
+        Knapsack_generator problem = new Knapsack_generator(5,5);
         Knapsack_solving solver = new Knapsack_solving(problem.getItems_dict(), problem.getCapacity());
         System.out.println(solver.getValue_max());
         System.out.println(problem.getCapacity());
