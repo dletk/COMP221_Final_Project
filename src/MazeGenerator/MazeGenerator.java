@@ -116,6 +116,7 @@ public class MazeGenerator extends GraphicsProgram {
 
     /**
      * Method to color the path if the player has the right answer
+     *
      * @param path the list of cells on the escaping path in order from player position to exit
      */
     private void coloringPathTrue(ArrayList<Cell> path) {
@@ -129,15 +130,16 @@ public class MazeGenerator extends GraphicsProgram {
 
     /**
      * Method to color the path and stop in the middle if the player has the wrong answer.
+     *
      * @param path the list of cells on the escaping path in order from player position to exit
      */
     private void coloringPathFalse(ArrayList<Cell> path) {
         // Find the ratio between the time allowed and the time player needed
-        double ratio = time_controller.getTime_allowed_extra()/userTimeTravel;
+        double ratio = time_controller.getTime_allowed_extra() / userTimeTravel;
         // Color the suitable number of cells on the path according to the ratio of time
-        int numCellsFilled = (int) Math.floor(ratio*path.size());
+        int numCellsFilled = (int) Math.floor(ratio * path.size());
         Iterator<Cell> iter = path.iterator();
-        while (numCellsFilled!=0) {
+        while (numCellsFilled != 0) {
             Cell aCell = iter.next();
             aCell.setFilled(true, Color.YELLOW);
             pause(time_controller.getTIME_PER_CELL());
@@ -161,7 +163,7 @@ public class MazeGenerator extends GraphicsProgram {
             value += knapsack_problem.getItems_dict().get(item).get(1);
         }
         if (weight >= (int) Math.floor(time_controller.generateCapacity()) || value != knapsack_solving.getValue_max()) {
-            userTimeTravel = weight*50 + time_controller.getMinimum_time();
+            userTimeTravel = weight * 50 + time_controller.getMinimum_time();
             return false;
         } else {
             return true;

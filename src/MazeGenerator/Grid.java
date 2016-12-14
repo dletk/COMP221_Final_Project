@@ -47,7 +47,7 @@ public class Grid extends GCompound {
     }
 
     /**
-     *
+     * Method to generate all the walls on the maze between cells
      */
     private void generateWalls() {
 //      This loop will loop through the grid row by row, so x will be changed, y will be same
@@ -70,9 +70,10 @@ public class Grid extends GCompound {
     }
 
     /**
-     *
+     * Method uses Kruskal algorithm to generate a maze, differently every time called
      */
     public void generateMaze() {
+        // Make the wallList become disorder
         Collections.shuffle(wallList);
         Iterator<Wall> iter = wallList.iterator();
         Wall current_wall;
@@ -87,10 +88,12 @@ public class Grid extends GCompound {
                 cell2 = arrCells[current_wall.getRow() + 1][current_wall.getCol()];
             }
             if (!cell1.getSetContain().contains(cell2) && !cell2.getSetContain().contains(cell1)) {
+                // Uncommented the pause to see how the maze constructed
 //                pause(50);
                 current_wall.sendToFront();
                 current_wall.setColor(Color.WHITE);
                 current_wall.setDeleted(true);
+                // Join the set containing cell1 and cell2
                 joinSet(cell1, cell2);
             }
         }
