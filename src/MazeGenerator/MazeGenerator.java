@@ -14,9 +14,11 @@ import java.util.Scanner;
  * Created by DucLe on 11/21/16.
  */
 public class MazeGenerator extends GraphicsProgram {
-
+    // The size of cell in the maze
     private static final int SIZE_CELLS = 20;
+    // The size of the maze in term of rows and columns (a square)
     private static final int SIZE_MAZE = 20;
+    // The coordinate on the canvas of the upper left corner
     private static final double UPPER_LEFT_X = 300;
     private static final double UPPER_LEFT_Y = 100;
 
@@ -28,6 +30,9 @@ public class MazeGenerator extends GraphicsProgram {
     private int level;
     private double userTimeTravel;
 
+    /**
+     * Init function to prepare the canvas before the game begin
+     */
     public void init() {
         aMaze = new Grid(SIZE_CELLS, SIZE_MAZE, UPPER_LEFT_X, UPPER_LEFT_Y);
         add(aMaze);
@@ -35,7 +40,9 @@ public class MazeGenerator extends GraphicsProgram {
         add(new GRect(UPPER_LEFT_X, UPPER_LEFT_Y, SIZE_CELLS * SIZE_MAZE, SIZE_CELLS * SIZE_MAZE));
     }
 
+    // The run (main) function of GraphicsProgram
     public void run() {
+        // Initialize the game with level 1
         level = 1;
         gamePlay();
 
@@ -82,8 +89,11 @@ public class MazeGenerator extends GraphicsProgram {
             System.out.println("Your answer is: " + itemChoose.toString());
             System.out.println("The right answer is " + knapsack_solving.getSetTaken().toString());
             System.out.println("The maximum value is: " + knapsack_solving.getValue_max());
-            pause(2000);
+            //Click to continue to next level
+            waitForClick();
+            // Clear the path of the last maze
             clearPath(path);
+            // Initialize a new maze
             init();
         }
     }
@@ -104,6 +114,10 @@ public class MazeGenerator extends GraphicsProgram {
         return path;
     }
 
+    /**
+     * Method to color the path if the player has the right answer
+     * @param path the list of cells on the escaping path in order from player position to exit
+     */
     private void coloringPathTrue(ArrayList<Cell> path) {
         Iterator<Cell> iter = path.iterator();
         while (iter.hasNext()) {
@@ -113,8 +127,14 @@ public class MazeGenerator extends GraphicsProgram {
         }
     }
 
+    /**
+     * Method to color the path and stop in the middle if the player has the wrong answer.
+     * @param path the list of cells on the escaping path in order from player position to exit
+     */
     private void coloringPathFalse(ArrayList<Cell> path) {
+        // Find the ratio between the time allowed and the time player needed
         double ratio = time_controller.getTime_allowed_extra()/userTimeTravel;
+        // Color the suitable number of cells on the path according to the ratio of time
         int numCellsFilled = (int) Math.floor(ratio*path.size());
         Iterator<Cell> iter = path.iterator();
         while (numCellsFilled!=0) {

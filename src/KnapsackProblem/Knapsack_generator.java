@@ -46,12 +46,12 @@ public class Knapsack_generator {
     protected HashMap<Integer, ArrayList<Integer>> generate_items(int num_items) {
         RandomGenerator random_generator = new RandomGenerator();
         items_dict = new HashMap<>();
-        for (int i = 0; i < num_items; i++) {
+        for (int i = 1; i <= num_items; i++) {
             ArrayList<Integer> newItem = new ArrayList<Integer>();
             // Control the weight of the items, not less than 1/5 of capacity but not larger than 1/2 capacity.
             newItem.add(random_generator.nextInt(capacity / 5, capacity / 2));//Weight
             newItem.add(random_generator.nextInt(20, 80));//Value
-            items_dict.put(i + 1, newItem);
+            items_dict.put(i, newItem);
         }
         return items_dict;
     }

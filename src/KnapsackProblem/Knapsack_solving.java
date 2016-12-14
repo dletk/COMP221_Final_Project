@@ -15,9 +15,11 @@ public class Knapsack_solving {
     private HashSet<Integer> setTaken;
 
     /**
+     * The constructor for the knapsack solver. Given a HashMap of items with weights and values, and a capacity, this
+     * class generate the knapsack table by dynamic programming and find the optimal solution
      *
-     * @param itemDicts
-     * @param capacity
+     * @param itemDicts HashMap of items
+     * @param capacity  the capacity of the knapsack problem
      */
     public Knapsack_solving(HashMap<Integer, ArrayList<Integer>> itemDicts, int capacity) {
         this.itemDicts = itemDicts;
@@ -28,10 +30,11 @@ public class Knapsack_solving {
     }
 
     /**
-     *
-     * @return
+     * Method to solve the knapsack problem with the given items and capacity.
+     * @return the maximum value can be chosen from the set of items
      */
     protected int solving() {
+        // Using dynamic programming to construct the knapsack_table value
         for (int row = 0; row <= itemDicts.size(); row++) {
             for (int col = 0; col <= capacity; col++) {
                 if (row == 0 || col == 0) {
@@ -49,13 +52,14 @@ public class Knapsack_solving {
                 }
             }
         }
+        // From the knapsack table, back trace to find which items were chosen
         backtrace();
         return knapsack_table[itemDicts.size()][capacity];
     }
 
     /**
-     *
-     * @return
+     * Getter for the knapsack table
+     * @return knapsack_table
      */
     public int[][] getKnapsack_table() {
         return knapsack_table;
@@ -63,6 +67,7 @@ public class Knapsack_solving {
 
     /**
      * Get the maximum value answer of the knapsack problem
+     *
      * @return value_max
      */
     public int getValue_max() {
@@ -70,8 +75,9 @@ public class Knapsack_solving {
     }
 
     /**
+     * Get the set of items chosen in the solution for knapsack problem.
      *
-     * @return
+     * @return setTaken
      */
     public HashSet<Integer> getSetTaken() {
         return setTaken;
@@ -85,7 +91,7 @@ public class Knapsack_solving {
         int col = capacity;
         while (row > 0 && col >= 0) {
             // Check to make sure we are not out of index
-            if (col-itemDicts.get(row).get(0) >= 0) {
+            if (col - itemDicts.get(row).get(0) >= 0) {
                 // Check if the value at the current position include the value of current items, if yes, then the current item was chosen
                 if (knapsack_table[row][col] == knapsack_table[row - 1][col - itemDicts.get(row).get(0)] + itemDicts.get(row).get(1)) {
                     setTaken.add(row);
