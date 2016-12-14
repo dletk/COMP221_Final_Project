@@ -139,7 +139,7 @@ public class MazeGenerator extends GraphicsProgram {
         // Color the suitable number of cells on the path according to the ratio of time
         int numCellsFilled = (int) Math.floor(ratio * path.size());
         Iterator<Cell> iter = path.iterator();
-        while (numCellsFilled != 0) {
+        while (numCellsFilled != 0 && iter.hasNext()) {
             Cell aCell = iter.next();
             aCell.setFilled(true, Color.YELLOW);
             pause(time_controller.getTIME_PER_CELL());
