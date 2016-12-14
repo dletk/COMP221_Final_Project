@@ -46,11 +46,13 @@ public class Grid extends GCompound {
         generateWalls();
     }
 
+    /**
+     *
+     */
     private void generateWalls() {
 //      This loop will loop through the grid row by row, so x will be changed, y will be same
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                // TODO: It will be more efficient to create a wall class, extending GLine, and store information of vertical or horizontal, i and j....
                 if (j < size - 1) {
                     arrWalls_ver[i][j] = new Wall(x + cellSize + cellSize * j, y + cellSize * i, x + cellSize + cellSize * j, y + cellSize * i + cellSize, i, j, false);
                     add(arrWalls_ver[i][j]);
@@ -61,15 +63,15 @@ public class Grid extends GCompound {
                     add(arrWalls_hor[i][j]);
                     wallList.add(arrWalls_hor[i][j]);
                 }
-
                 arrCells[i][j] = new Cell(x + j * cellSize, y + i * cellSize, cellSize, cellSize, i, j, new HashSet<>());
-//                arrCells[i][j].setFilled(true, Color.CYAN);
                 add(arrCells[i][j]);
-
             }
         }
     }
 
+    /**
+     *
+     */
     public void generateMaze() {
         Collections.shuffle(wallList);
         Iterator<Wall> iter = wallList.iterator();
@@ -92,7 +94,7 @@ public class Grid extends GCompound {
                 joinSet(cell1, cell2);
             }
         }
-        arrCells[size-1][size-1].setFilled(true, Color.CYAN);
+        arrCells[size - 1][size - 1].setFilled(true, Color.CYAN);
         arrCells[0][0].setFilled(true, Color.YELLOW);
     }
 
@@ -119,14 +121,29 @@ public class Grid extends GCompound {
         return arrCells;
     }
 
+    /**
+     * Get the list of all walls on the maze
+     *
+     * @return list of all walls
+     */
     public ArrayList<Wall> getWallList() {
         return wallList;
     }
 
+    /**
+     * Get 2D array of all vertical walls, with row and col also the vertical lines of 2 cells that wall is separating.
+     *
+     * @return 2D array of all vertical walls
+     */
     public Wall[][] getArrWalls_ver() {
         return arrWalls_ver;
     }
 
+    /**
+     * Get 2D array of all horizontal walls, with row and col also the vertical lines of 2 cells that wall is separating
+     *
+     * @return 2D array of all horizontal walls.
+     */
     public Wall[][] getArrWalls_hor() {
         return arrWalls_hor;
     }

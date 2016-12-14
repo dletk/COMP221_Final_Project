@@ -26,6 +26,7 @@ public class MazeGenerator extends GraphicsProgram {
     private Knapsack_generator knapsack_problem;
     private Knapsack_solving knapsack_solving;
     private int level;
+    private double userTimeTravel;
 
     public void init() {
         aMaze = new Grid(SIZE_CELLS, SIZE_MAZE, UPPER_LEFT_X, UPPER_LEFT_Y);
@@ -35,24 +36,19 @@ public class MazeGenerator extends GraphicsProgram {
     }
 
     public void run() {
-//        waitForClick();
-//        aMaze.generateMaze();
-//        solver = new MazeSolving_BFS(aMaze.getArrCells(), aMaze.getArrWalls_ver(), aMaze.getArrWalls_hor(), SIZE_MAZE);
         level = 1;
         gamePlay();
 
 
-//        System.out.println(path.size());
     }
 
     private void gamePlay() {
         System.out.println("Welcome to Mazelo Riddle");
-        System.out.println("Your level is: " + level);
         boolean winning = true;
         while (winning) {
+            System.out.println("++++++++++++++++++++++++++++++++++++++++");
+            System.out.println("Your level is: " + level);
             ArrayList<Cell> path = initGame();
-            Iterator<Cell> iter = path.iterator();
-
             System.out.println(knapsack_problem.getItems_dict());
             System.out.println("Your time to escape is: " + time_controller.getTime_allowed_extra() + "ms");
             System.out.println("Please enter an item you want to add to the back and hit Return, or enter DONE to finish:");
@@ -67,26 +63,26 @@ public class MazeGenerator extends GraphicsProgram {
                         break;
                     }
                 } else {
-                    System.out.println("You choose item #"+in_value);
+                    System.out.println("You choose item #" + in_value);
                     itemChoose.add(Integer.parseInt(in_value));
                 }
             }
-            boolean win = checkWin(itemChoose, path);
-//            int numStar = checkStars();
+            boolean win = checkWin(itemChoose);
             System.out.println("Click on the screen to see the result.");
             waitForClick();
-            while (iter.hasNext()) {
-                Cell aCell = iter.next();
-                aCell.setFilled(true, Color.YELLOW);
-                pause(time_controller.getTIME_PER_CELL());
-            }
             if (win) {
+                coloringPathTrue(path);
                 System.out.println("You won!");
                 level += 1;
             } else {
+                coloringPathFalse(path);
                 System.out.println("You lost!");
+                winning = false;
             }
-            System.out.println(knapsack_solving.getValue_max());
+            System.out.println("Your answer is: " + itemChoose.toString());
+            System.out.println("The right answer is " + knapsack_solving.getSetTaken().toString());
+            System.out.println("The maximum value is: " + knapsack_solving.getValue_max());
+            pause(2000);
             clearPath(path);
             init();
         }
@@ -108,7 +104,34 @@ public class MazeGenerator extends GraphicsProgram {
         return path;
     }
 
-    private boolean checkWin(ArrayList<Integer> itemsChoose, ArrayList<Cell> path) {
+    private void coloringPathTrue(ArrayList<Cell> path) {
+        Iterator<Cell> iter = path.iterator();
+        while (iter.hasNext()) {
+            Cell aCell = iter.next();
+            aCell.setFilled(true, Color.YELLOW);
+            pause(time_controller.getTIME_PER_CELL());
+        }
+    }
+
+    private void coloringPathFalse(ArrayList<Cell> path) {
+        double ratio = time_controller.getTime_allowed_extra()/userTimeTravel;
+        int numCellsFilled = (int) Math.floor(ratio*path.size());
+        Iterator<Cell> iter = path.iterator();
+        while (numCellsFilled!=0) {
+            Cell aCell = iter.next();
+            aCell.setFilled(true, Color.YELLOW);
+            pause(time_controller.getTIME_PER_CELL());
+            numCellsFilled--;
+        }
+    }
+
+    /**
+     * Method to check whether the choice of player is the winning or losing combination.
+     *
+     * @param itemsChoose the list of items that user chose from the given knapsack problem
+     * @return true if the player has winning move, false otherwise.
+     */
+    private boolean checkWin(ArrayList<Integer> itemsChoose) {
         Iterator<Integer> iter = itemsChoose.iterator();
         int weight = 0;
         int value = 0;
@@ -117,17 +140,19 @@ public class MazeGenerator extends GraphicsProgram {
             weight += knapsack_problem.getItems_dict().get(item).get(0);
             value += knapsack_problem.getItems_dict().get(item).get(1);
         }
-        if (weight * 50 + time_controller.getMinimum_time() > time_controller.getTime_allowed_extra()) {
+        if (weight >= (int) Math.floor(time_controller.generateCapacity()) || value != knapsack_solving.getValue_max()) {
+            userTimeTravel = weight*50 + time_controller.getMinimum_time();
             return false;
         } else {
             return true;
         }
     }
 
-    private void checkStars() {
-
-    }
-
+    /**
+     * Method to clear the escaping path of the last level
+     *
+     * @param path the current escaping path
+     */
     private void clearPath(ArrayList<Cell> path) {
         Iterator<Cell> iter = path.iterator();
         while (iter.hasNext()) {
@@ -135,5 +160,4 @@ public class MazeGenerator extends GraphicsProgram {
             aCell.setFilled(false);
         }
     }
-
 }
