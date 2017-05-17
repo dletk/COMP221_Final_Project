@@ -41,7 +41,7 @@ public class MazeSolving_BFS {
                 Iterator<Cell> iter = neighbors.iterator();
                 while (iter.hasNext()) {
                     Cell curr_Neighbor = iter.next();
-                    if (!curr_Neighbor.isVisited()) {
+                    if (!curr_Neighbor.isVisited() && !seen.contains(curr_Neighbor)) {
                         curr_Neighbor.setVisited(true);
                         seen.add(curr_Neighbor);
                         dictParents.put(curr_Neighbor, curr_Cell);

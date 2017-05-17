@@ -89,7 +89,7 @@ public class Knapsack_solving {
     private void backtrace() {
         int row = itemDicts.size();
         int col = capacity;
-        while (row > 0 && col >= 0) {
+        while (row >= 0 && col >= 0) {
             // Check to make sure we are not out of index
             if (col - itemDicts.get(row).get(0) >= 0) {
                 // Check if the value at the current position include the value of current items, if yes, then the current item was chosen
